@@ -1,0 +1,37 @@
+mkdir tag-server
+cd tag-server
+go mod init github.com/oneflower/tag-server
+
+go get github.com/go-sql-driver/mysql github.com/jmoiron/sqlx github.com/gin-gonic/gin github.com/elastic/go-elasticsearch/v7
+
+
+go run cmd/tag-server/main.go
+
+curl --request POST \
+  --url http://localhost:9800/api/tag \
+  --header 'content-type: application/json' \
+  --data '{
+    "name": "fruit"
+}'
+
+curl --request POST \
+  --url http://localhost:9800/api/tag/search \
+  --header 'content-type: application/json' \
+  --data '{
+    "keyword": "fruit"
+}'
+
+curl --request POST \
+  --url http://localhost:9800/api/tag/link_entity \
+  --header 'content-type: application/json' \
+  --data '{
+    "entity_id": 1,
+    "tag_id": 1
+}'
+
+curl --request GET \
+  --url http://localhost:9800/api/tag/entity_tags \
+  --header 'content-type: application/json' \
+  --data '{
+    "entity_id": 1
+}'
